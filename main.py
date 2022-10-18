@@ -1,3 +1,4 @@
+
 # Домашнее задание к лекции «Открытие и чтение файла, запись в файл»
 
 def my_cook_book(text_file):
@@ -16,17 +17,17 @@ def my_cook_book(text_file):
                               for _ in range(int(next(lines)))] for n in lines}
     return cook_book_dict
 
-
 assert type(my_cook_book("recipes.txt")) is dict  # Учусь покрывать тестами)))
 
-print(my_cook_book("recipes.txt"))  # Выводим получившийся словарь с рецептами
-print("######################################################################################")
-cook_book = my_cook_book("recipes.txt")
-#
-#
+print(my_cook_book("recipes.txt"))  # Вывожу получившийся словарь с рецептами
+
+print("\n\n")
+
+cook_book = my_cook_book("recipes.txt") #Создю книгу(словарь) с рецептами для теста функции "get_shop_list_by_dishes()"  
+
 def get_shop_list_by_dishes(dishes, person_count):
-    """Функция, которая на вход принимает список блюд из cook_book и количество персон
-    для кого мы будем готовить и выводит словарь с названием ингредиентов и его количества
+    """Функция, которая на входе принимает список блюд из cook_book и количество персон
+    для кого мы будем готовить и возвращает словарь с названием ингредиентов и их количеством
     для блюда, с учетом того, что ингредиенты могут повторяться.
     """
     shop_list_by_dishes = {}
@@ -41,39 +42,28 @@ def get_shop_list_by_dishes(dishes, person_count):
     return shop_list_by_dishes
 
 
-print(get_shop_list_by_dishes(['Омлет', 'Фахитос', 'Утка по-пекински'], 10))  # Выводим получившийся словарь.
+print(get_shop_list_by_dishes(['Омлет', 'Фахитос', 'Утка по-пекински'], 10))  # Вывожу получившийся словарь. Для примера
+# взял два рецепта с одинаковыми ингридиентами "Помидор"(в Омлете и Фахитос), чтобы продемонстрировать работу функции с
+# учетом дополнительного усорвия из задания: "Обратите внимание, что ингредиенты могут повторяться". На каждое из этих
+# блюд требуетсмя два помидора.
 
-#
-# def concatenate_files_by_number_of_lines(text_file_1):
-#     """
-#     """
-#     with open(text_file_1) as f:
-#         count = 0
-#         for line in f:
-#             count += 1
-#
-#         list_1 = [text_file_1, count, f.readlines()]
-#         print(list_1)
+def concatenate_files_by_number_of_lines(*files):
+    """Функция, которая на входе принимает текстовые файлы и объединяет в один новый файл по следующим правилам:
+    - Содержимое исходных файлов в результирующем файле сортируется по количеству строк в них (то есть первым записывает
+    файл с наименьшим количеством строк, а последним - с наибольшим)
+    - Содержимое файла предваряться служебной информацией на 2-х строках: имя файла и количество строк в нем
+    """
+    concatenated_text ={}    
+    for file in files:
+      with open(file, 'rt', encoding='utf-8') as f:
+        text = f.readlines()
+        number_of_lines = len(text)
+        concatenated_text[file] = (f'{number_of_lines}\n{"".join(text)}\n')
+    sorted_text ={k: concatenated_text[k] for k in sorted(concatenated_text, key = concatenated_text.get)} 
+    for key, value in sorted_text.items():
+      with open('concatenate_files.txt', 'a', encoding='utf-8') as f:
+        f.writelines(f'{key}\n{value}\n')
+
+concatenate_files_by_number_of_lines('1.txt', '2.txt', '3.txt') # Создаю объединенный файл
 
 
-# with open('1.txt') as f:
-#     for line in f:
-#       print(line, end='')
-
-# list = ['2018-01-01', 'yandex', 'cpc', 100]
-
-# dict = list.pop()
-
-# for i in reversed(list):
-#   dict = {i: dict}
-
-# print(dict)
-# concatenate_files_by_number_of_lines("1.txt")
-# mylist = f.read().splitlines()
-# 2.txt
-# 1
-# Строка номер 1 файла номер 2
-# 1.txt
-# 2
-# Строка номер 1 файла номер 1
-# Строка номер 2 файла номер 1
